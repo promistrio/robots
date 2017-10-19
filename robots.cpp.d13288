@@ -1,0 +1,117 @@
+#include "robots.h"
+#include <QDebug>
+
+
+Robots::Robots()
+{
+    addRobot(2,1);
+    addRobot(40,50);
+
+}
+
+void Robots::addRobot(int x, int y)
+{
+    Robot pointer(x, y);
+
+    this->m_robots.append(pointer);
+
+}
+
+Robot::Robot(int x, int y)
+{
+    this->pos.setX(x);
+    this->pos.setY(y);
+    this->source = QString ("Пусто");
+    this->s_color = QString ("green");
+}
+
+int Robot::x()
+{
+    return this->pos.x();
+}
+
+int Robot::y()
+{
+    return this->pos.y();
+}
+
+QString Robot::color()
+{
+    qDebug() << this->s_color;
+    return this->s_color;
+}
+
+int Robots::rowCount(const QModelIndex & parent) const {
+    Q_UNUSED(parent);
+    return this->m_robots.count();
+}
+
+QVariant Robots::data(const QModelIndex & index, int role) const {
+    //qDebug() << index.row() << " " << index.column() << " " << role;
+
+    qDebug() <<"Hello";
+    Robot robot = this->m_robots[index.row()];
+    if (index.row() < 0 || index.row() >= m_robots.count()){
+
+        return QVariant();
+
+    }
+    else if (role == XRole)
+        return robot.x();
+    else if (role == YRole)
+        return robot.y();
+    else if (role == ColorRole){
+        qDebug()  << "get color";
+        return robot.color();
+    }
+    return QVariant();
+}
+
+QHash<int, QByteArray> Robots::roleNames() const {
+    QHash<int, QByteArray> roles;
+    roles[XRole] = "posX";
+    roles[YRole] = "posY";
+    roles[ColorRole] = "color";
+    return roles;
+}
+
+/*QVariant Robots::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (role != Qt::DisplayRole)
+            return QVariant();
+
+        if (orientation == Qt::Horizontal)
+            return QString("Column %1").arg(section);
+        else
+            return QString("Row %1").arg(section);
+}*/
+
+/*Qt::ItemFlags Robots::flags(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return Qt::ItemIsEnabled;
+
+    return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
+}*/
+/*
+bool CurrentPhotoPointer::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (index.isValid() && role == Qt::EditRole) {
+
+        //stringList.replace(index.row(), value.toString());
+        emit dataChanged(index, index);
+        return true;
+    }
+
+    return false;
+}
+
+QHash<int, QByteArray> CurrentPhotoPointer::roleNames() const {
+    QHash<int, QByteArray> roles;
+    roles[IdRole] = "track_id";
+    roles[LatRole] = "lat";
+    roles[LonRole] = "lon";
+    roles[ColorRole] = "color_track";
+    return roles;
+}*/
+

@@ -1,0 +1,28 @@
+#ifndef FIELD_H
+#define FIELD_H
+
+
+#include <QAbstractTableModel>
+#include <QDebug>
+#include <QVector>
+#include "constants.h"
+#include <QTime>
+
+    class Field : public QAbstractListModel
+    {
+        Q_OBJECT
+    public:
+        Field(int width = 0, int height = 0);
+     
+        QVector<int>& operator[](int n) {return (v_field.begin()[n]);} // It's awesome! (suka, blyad)
+    
+    protected:
+        QHash<int, QByteArray> roleNames() const;
+    
+    private:
+        int width, height;
+        QVector< QVector<int> > v_field;
+    
+    };
+
+#endif // FIELD_H
